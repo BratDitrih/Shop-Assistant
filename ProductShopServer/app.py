@@ -19,16 +19,6 @@ def get_store_api(store_id):
     store = db.get_store(store_id)
     return store
 
-@app.route("/prices/max", methods=["GET"])
-def get_product_with_max_price_api():
-    max_price = db.get_product_with_max_price()
-    return max_price
-
-@app.route("/prices/stats/<product_id>", methods=["GET"])
-def get_stats_of_product_api(product_id):
-    stat = db.get_stats_of_product(product_id)
-    return stat
-
 @app.route("/stores/add", methods=["POST"])
 def add_store_api():
     data = request.get_json()
@@ -39,5 +29,15 @@ def add_store_api():
 def delete_store_api(store_id):
     result = db.delete_store(store_id)
     return result
+
+@app.route("/prices/max", methods=["GET"])
+def get_product_with_max_price_api():
+    max_price = db.get_product_with_max_price()
+    return max_price
+
+@app.route("/prices/stats/<product_id>", methods=["GET"])
+def get_stats_of_product_api(product_id):
+    stat = db.get_stats_of_product(product_id)
+    return stat
 
 app.run("0.0.0.0", port=8080, debug=True)

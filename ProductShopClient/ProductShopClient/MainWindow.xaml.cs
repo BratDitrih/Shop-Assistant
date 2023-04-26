@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -36,6 +37,7 @@ namespace ProductShopClient
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DownloadCustomers();
+            DownloadProductWithMaxPrice();
         }
 
 
@@ -52,6 +54,13 @@ namespace ProductShopClient
             var content = await GetJsonResponse("http://localhost:8080/customers/all");
             Customers = JsonConvert.DeserializeObject<ObservableCollection<Customer>>(content);
             CustomersListView.ItemsSource = Customers;
+        }
+
+        private async void DownloadProductWithMaxPrice()
+        {
+            var content = await GetJsonResponse("http://localhost:8080/prices/max");
+            var productWithMaxPrice = JsonConvert.DeserializeObject<Product>(content);
+            ProductWithMaxPriceStats.Text = productWithMaxPrice.ToString();
         }
 
         private void OnFilterButtonClicked(object sender, RoutedEventArgs e)
@@ -94,7 +103,7 @@ namespace ProductShopClient
             }
         }
 
-        private async void OnSearchStoreByIdButtonClicked(object sender, RoutedEventArgs e)
+        private async void OnSearchStoreButtonClicked(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(StoreIdTextBox.Text, out int id))
             {
@@ -113,7 +122,6 @@ namespace ProductShopClient
             {
                 FoundedStoreInfo.Text = "Неправильный формат Id";
             }
-            
         }
 
         private async void OnAddStoreButtonClicked(object sender, RoutedEventArgs e)
@@ -183,6 +191,27 @@ namespace ProductShopClient
                 DeleteStatusTextBlock.Text = "Неправильный формат Id";
             }
         }
+
+        private async void OnSearchProductButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(ProductIdTextBox.Text, out int id))
+            {
+                var content = await GetJsonResponse($"http://localhost:8080/prices/stats/{id}");
+                var foundedProduct = JsonConvert.DeserializeObject<ProdcutStats>(content);
+                if (foundedProduct.Count > 0)
+                {
+                    FoundedProductInfo.Text = foundedProduct.ToString();
+                }
+                else
+                {
+                    FoundedProductInfo.Text = "Продукт с таким Id не найден";
+                }
+            }
+            else
+            {
+                FoundedProductInfo.Text = "Неправильный формат Id";
+            }
+        }
     }
 
     public class Customer
@@ -215,6 +244,49 @@ namespace ProductShopClient
         public string Brand { get; set; }
     }
 
+    public class Product
+    {
+        [JsonProperty("product_id")]
+        public int Id { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("category")]
+        public string Category { get; set; }
+
+        [JsonProperty("brand")]
+        public string Brand { get; set; }
+
+        [JsonProperty("price")]
+        public double Price { get; set; }
+
+        [JsonProperty("startDate")]
+        public DateTime StartDate { get; set; }
+
+        public override string ToString() => $"Id: {Id}, Name: {Name}, Category: {Category}, Brand: {Brand}, Price: {Price}, StartDate: {StartDate}";
+    }
+
+    public class ProdcutStats
+    {
+        [JsonProperty("count")]
+        public int Count { get; set; }
+
+        [JsonProperty("stores_amount")]
+        public int StoresAmount { get; set; }
+
+        [JsonProperty("min_price")]
+        public double MinPrice { get; set; }
+
+        [JsonProperty("max_price")]
+        public double MaxPrice { get; set; }
+
+        [JsonProperty("avg_price")]
+        public double AvgPrice { get; set; }
+
+        public override string ToString() => $"Count: {Count}, Stores Amount: {StoresAmount}, MinPrice: {MinPrice}, MaxPrice: {MaxPrice}, AvgPrice: {AvgPrice}";
+    }
+
     public class Store
     {
         [JsonProperty("store_id", DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -226,10 +298,6 @@ namespace ProductShopClient
         [JsonProperty("region")]
         public int Region { get; set; }
 
-        public override string ToString()
-        {
-            return $"Id: {Id}, Address: {Address}, Region: {Region}";
-        }
-
+        public override string ToString() => $"Id: {Id}, Address: {Address}, Region: {Region}";
     }
 }

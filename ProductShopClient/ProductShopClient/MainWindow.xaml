@@ -8,8 +8,8 @@
         Title="MainWindow" Height="450" Width="800"
         Loaded="Window_Loaded">
     <TabControl>
-        
-        <TabItem Header="Customers">
+
+        <TabItem Header="Статистика по покупателям">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -17,10 +17,10 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Text="Filter:"  Margin="5"/>
+                    <TextBlock Text="Фильтр:"  Margin="5"/>
                     <TextBox x:Name="FilterTextBox" Width="100" Margin="5"/>
-                    <Button Content="Apply" Margin="5" Click="OnFilterButtonClicked"/>
-                    <Button Content="Reset" Margin="5" Click="OnResetButtonClicked"/>
+                    <Button Content="Применить" Margin="5" Click="OnFilterButtonClicked"/>
+                    <Button Content="Сбросить" Margin="5" Click="OnResetButtonClicked"/>
                 </StackPanel>
 
                 <Grid Grid.Row="1">
@@ -55,11 +55,10 @@
                         </ListView>
                     </ScrollViewer>
                 </Grid>
-
             </Grid>
         </TabItem>
 
-        <TabItem Header="Stores">
+        <TabItem Header="Управление магазинами">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -69,21 +68,19 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    
-                    <StackPanel>
+                    <StackPanel Orientation="Vertical">
                         <Label Content="Информация по магазину:" Margin="5"/>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Id:" Margin="5"/>
                             <TextBox x:Name="StoreIdTextBox" Width="60" Margin="5"/>
                         </StackPanel>
-                        <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreByIdButtonClicked"/>
+                        <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreButtonClicked"/>
                     </StackPanel>
 
                     <TextBlock x:Name="FoundedStoreInfo" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-                    
                 </StackPanel>
 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="1" Orientation="Vertical">
                     <Label Content="Добавление магазина:" Margin="5"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Адресс:" Margin="5"/>
@@ -97,7 +94,7 @@
                     <TextBlock x:Name="AddStatusTextBlock" Margin="5"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="2" Orientation="Vertical">
                     <Label Content="Удаление магазина:" Margin="5"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Id:" Margin="5"/>
@@ -106,9 +103,34 @@
                     <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="OnDeleteStoreButtonClicked"/>
                     <TextBlock x:Name="DeleteStatusTextBlock" Margin="5"/>
                 </StackPanel>
-
             </Grid>
         </TabItem>
-        
+
+        <TabItem Header="Статистика по продуктам">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Продукт с максимальной ценой:" Margin="5"/>
+                        <TextBlock x:Name="ProductWithMaxPriceStats" Width="Auto" VerticalAlignment="Center" Margin="5"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <Label Content="Информация по продукту:" Margin="5"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Id:" Margin="5"/>
+                        <TextBox x:Name="ProductIdTextBox" Width="60" Margin="5"/>
+                    </StackPanel>
+                    <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchProductButtonClicked"/>
+                    <TextBlock x:Name="FoundedProductInfo" Width="Auto" VerticalAlignment="Center" Margin="5"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
     </TabControl>
 </Window>
