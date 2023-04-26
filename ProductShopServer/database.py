@@ -49,6 +49,29 @@ def get_store(store_id):
             "region": store.region
             }
     return jsonify(result)
+
+
+def add_store(data):
+    Session = sessionmaker(bind=engine)
+    with Session() as session:
+        new_record = Store(**data)
+        session.add(new_record)
+        session.commit()
+        result = new_record.store_id
+    return jsonify({'store_id': result})
+ 
+
+def delete_store(store_id):
+    Session = sessionmaker(bind=engine)
+    with Session() as session:
+        store = session.query(Store).get(store_id)
+        if not store:
+            result = {"status": "not found"}
+        else:
+            session.delete(store)
+            session.commit()
+            result = {"status": "ok"}
+    return jsonify(result)
  
 
 def get_product_with_max_price():
@@ -88,27 +111,4 @@ def get_stats_of_product(product_id):
             "max-price": max_price,
             "avg_price": avg_price
             }
-    return jsonify(result)
- 
-
-def add_store(data):
-    Session = sessionmaker(bind=engine)
-    with Session() as session:
-        new_record = Store(**data)
-        session.add(new_record)
-        session.commit()
-        result = new_record.store_id
-    return jsonify({'store_id': result})
- 
-
-def delete_store(store_id):
-    Session = sessionmaker(bind=engine)
-    with Session() as session:
-        store = session.query(Store).get(store_id)
-        if not store:
-            result = {"status": "not found"}
-        else:
-            session.delete(store)
-            session.commit()
-            result = {"status": "ok"}
     return jsonify(result)

@@ -76,7 +76,7 @@
                             <Label Content="Id:" Margin="5"/>
                             <TextBox x:Name="StoreIdTextBox" Width="60" Margin="5"/>
                         </StackPanel>
-                        <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="SearchStoreByIdButton"/>
+                        <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreByIdButtonClicked"/>
                     </StackPanel>
 
                     <TextBlock x:Name="FoundedStoreInfo" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
@@ -86,10 +86,6 @@
                 <StackPanel Grid.Row="1">
                     <Label Content="Добавление магазина:" Margin="5"/>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Id:" Margin="5"/>
-                        <TextBox x:Name="NewIdTextBox" Width="60" Margin="5"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
                         <Label Content="Адресс:" Margin="5"/>
                         <TextBox x:Name="NewAddressTextBox" Width="200" Margin="5"/>
                     </StackPanel>
@@ -97,7 +93,7 @@
                         <Label Content="Регион:" Margin="5"/>
                         <TextBox x:Name="NewRegionTextBox" Width="200" Margin="5"/>
                     </StackPanel>
-                    <Button Content="Добавить" Margin="5" Width="100" HorizontalAlignment="Left" Click="AddStoreButton"/>
+                    <Button Content="Добавить" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnAddStoreButtonClicked"/>
                     <TextBlock x:Name="AddStatusTextBlock" Margin="5"/>
                 </StackPanel>
 
@@ -107,7 +103,7 @@
                         <Label Content="Id:" Margin="5"/>
                         <TextBox x:Name="DeleteIdTextBox" Width="60" Margin="5"/>
                     </StackPanel>
-                    <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="DeleteStoreButton"/>
+                    <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="OnDeleteStoreButtonClicked"/>
                     <TextBlock x:Name="DeleteStatusTextBlock" Margin="5"/>
                 </StackPanel>
 

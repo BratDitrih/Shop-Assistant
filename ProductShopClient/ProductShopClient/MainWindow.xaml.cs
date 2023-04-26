@@ -2,13 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -95,7 +94,7 @@ namespace ProductShopClient
             }
         }
 
-        private async void SearchStoreByIdButton(object sender, RoutedEventArgs e)
+        private async void OnSearchStoreByIdButtonClicked(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(StoreIdTextBox.Text, out int id))
             {
@@ -117,14 +116,72 @@ namespace ProductShopClient
             
         }
 
-        private void AddStoreButton(object sender, RoutedEventArgs e)
+        private async void OnAddStoreButtonClicked(object sender, RoutedEventArgs e)
         {
+            string address = NewAddressTextBox.Text;
+            if (int.TryParse(NewRegionTextBox.Text, out int region))
+            {
+                var storeToAdd = new Store()
+                {
+                    Address = address,
+                    Region = region
+                };
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var content = new StringContent(JsonConvert.SerializeObject(storeToAdd), Encoding.UTF8, "application/json");
+                        var response = await client.PostAsync($"http://localhost:8080/stores/add", content);
+                        response.EnsureSuccessStatusCode();
+                        var responseJson = await response.Content.ReadAsStringAsync();
+                        int addedStoreId = JsonConvert.DeserializeObject<dynamic>(responseJson).store_id;
+                        AddStatusTextBlock.Text = $"Магазин с Id = {addedStoreId} успешно добавлен";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AddStatusTextBlock.Text = "Ошибка во время добавления записи. " + ex.Message;
+                }
 
+            }
+            else
+            {
+                AddStatusTextBlock.Text = "Неправильный формат региона";
+            }
+            
         }
 
-        private void DeleteStoreButton(object sender, RoutedEventArgs e)
+        private async void OnDeleteStoreButtonClicked(object sender, RoutedEventArgs e)
         {
-
+            if (int.TryParse(DeleteIdTextBox.Text, out int id))
+            {
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var response = await client.DeleteAsync($"http://localhost:8080/stores/delete/{id}");
+                        response.EnsureSuccessStatusCode();
+                        var responseJson = await response.Content.ReadAsStringAsync();
+                        string responseText = JsonConvert.DeserializeObject<dynamic>(responseJson).status;
+                        if (responseText == "ok")
+                        {
+                            DeleteStatusTextBlock.Text = "Магазин был успешно удален";
+                        }
+                        else
+                        {
+                            DeleteStatusTextBlock.Text = "Магазин с таким id не найден";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DeleteStatusTextBlock.Text = "Ошибка во время удаления записи. " + ex.Message;
+                }
+            }
+            else
+            {
+                DeleteStatusTextBlock.Text = "Неправильный формат Id";
+            }
         }
     }
 
@@ -160,14 +217,14 @@ namespace ProductShopClient
 
     public class Store
     {
-        [JsonProperty("store_id")]
+        [JsonProperty("store_id", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int Id { get; set; }
 
         [JsonProperty("address")]
         public string Address { get; set; }
 
-        [JsonProperty("Region")]
-        public string Region { get; set; }
+        [JsonProperty("region")]
+        public int Region { get; set; }
 
         public override string ToString()
         {
