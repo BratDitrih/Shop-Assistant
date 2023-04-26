@@ -8,7 +8,6 @@
         Title="MainWindow" Height="450" Width="800"
         Loaded="Window_Loaded">
     <Grid>
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -18,20 +17,42 @@
             <TextBlock Text="Filter:"  Margin="5"/>
             <TextBox x:Name="FilterTextBox" Width="100" Margin="5"/>
             <Button Content="Apply" Margin="5" Click="OnFilterButtonClicked"/>
+            <Button Content="Reset" Margin="5" Click="OnResetButtonClicked"/>
         </StackPanel>
-        
-        <ScrollViewer Grid.Row="1">
-            <ListView x:Name="CustomersListView">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
-                        <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}" Width="100"/>
-                        <GridViewColumn Header="BirthDate" DisplayMemberBinding="{Binding BirthDate}" Width="100"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </ScrollViewer>
-        
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0">
+                <ListView x:Name="CustomersListView" ItemsSource="{Binding Customers}" SelectionChanged="OnCustomerSelectionChanged">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
+                            <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}" Width="100"/>
+                            <GridViewColumn Header="BirthDate" DisplayMemberBinding="{Binding BirthDate}" Width="100"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Column="1">
+                <ListView x:Name="PurchasesListView" Visibility="Collapsed">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                            <GridViewColumn Header="SaleDate" DisplayMemberBinding="{Binding SaleDate}" Width="100"/>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
+                            <GridViewColumn Header="Brand" DisplayMemberBinding="{Binding Brand}" Width="100"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
+
+        </Grid>
+    
     </Grid>
 </Window>

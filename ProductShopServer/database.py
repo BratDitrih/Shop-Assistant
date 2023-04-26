@@ -5,6 +5,7 @@ from models import Product, Store, Customer, Price, Sale
 
 engine = create_engine("postgresql+psycopg2://postgres:400501@localhost:5432/ProductSales")
 
+
 def get_all_customers():
     Session = sessionmaker(bind=engine)
     with Session() as session:
@@ -18,6 +19,22 @@ def get_all_customers():
             "birth_date": customer.birth_date
             })
     return jsonify(result)
+
+
+def get_customer_purchases(customer_id):
+        Session = sessionmaker(bind=engine)
+        with Session() as session:
+            latest_sale_date_subquery = session.query(func.max(Sale.sale_date).filter(Sale.customer_id == customer_id)).subquery()
+            purchases = session.query(Sale.sale_id, Sale.sale_date, Product.name, Product.brand).join(Product).filter(Sale.customer_id == customer_id).filter(Sale.sale_date == latest_sale_date_subquery).all()
+            result = []
+            for purchase in purchases:
+                result.append({
+                'sale_id': purchase.sale_id,
+                'sale_date': purchase.sale_date,
+                'name': purchase.name,
+                "brand": purchase.brand
+                })
+        return jsonify(result)
  
 
 def get_store(store_id):

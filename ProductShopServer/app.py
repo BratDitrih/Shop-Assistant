@@ -4,9 +4,14 @@ import database as db
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-@app.route("/customers/all/", methods=["GET"])
+@app.route("/customers/all", methods=["GET"])
 def get_all_customers_api():
     customers = db.get_all_customers()
+    return customers
+
+@app.route("/customers/<customer_id>/purchases", methods=["GET"])
+def get_customer_purchases(customer_id):
+    customers = db.get_customer_purchases(customer_id)
     return customers
 
 @app.route("/stores/<store_id>/", methods=["GET"])

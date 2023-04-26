@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -30,18 +31,26 @@ namespace ProductShopClient
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DownloadCustomers();
+        }
+
+
+        private async Task<string> GetJsonResponse(string url)
         {
             var client = new HttpClient();
-            DownloadCustomers(client);
+            var response = await client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            return content;
         }
 
-        private async void DownloadCustomers(HttpClient client)
+        private async void DownloadCustomers()
         {
-            var response = await client.GetAsync("http://localhost:8080/customers/all");
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await GetJsonResponse("http://localhost:8080/customers/all");
             Customers = JsonConvert.DeserializeObject<ObservableCollection<Customer>>(content);
             CustomersListView.ItemsSource = Customers;
         }
@@ -66,6 +75,25 @@ namespace ProductShopClient
                 };
             }
         }
+
+        private void OnResetButtonClicked(object sender, RoutedEventArgs e)
+        {
+            FilterTextBox.Text = string.Empty;
+            OnFilterButtonClicked(sender, e);
+        }
+
+        private async void OnCustomerSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedCustomer = CustomersListView.SelectedItem as Customer;
+            if (selectedCustomer != null)
+            {
+                int customerId = selectedCustomer.Id;
+                var content = await GetJsonResponse($"http://localhost:8080/customers/{customerId}/purchases");
+                var purchases = JsonConvert.DeserializeObject<List<Purchase>>(content);
+                PurchasesListView.ItemsSource = purchases;
+                PurchasesListView.Visibility = Visibility.Visible;
+            }
+        }
     }
 
     public class Customer
@@ -81,5 +109,20 @@ namespace ProductShopClient
 
         [JsonProperty("birth_date")]
         public DateTime BirthDate { get; set; }
+    }
+
+    public class Purchase
+    {
+        [JsonProperty("sale_id")]
+        public int Id { get; set; }
+
+        [JsonProperty("sale_date")]
+        public DateTime SaleDate { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("brand")]
+        public string Brand { get; set; }
     }
 }
