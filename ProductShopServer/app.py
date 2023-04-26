@@ -4,22 +4,22 @@ import database as db
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-@app.route("/customers/show/")
-def get_random_customers_api():
-    customers = db.get_random_customers()
+@app.route("/customers/all/", methods=["GET"])
+def get_all_customers_api():
+    customers = db.get_all_customers()
     return customers
 
-@app.route("/stores/<store_id>/")
+@app.route("/stores/<store_id>/", methods=["GET"])
 def get_store_api(store_id):
     store = db.get_store(store_id)
     return store
 
-@app.route("/prices/max")
+@app.route("/prices/max", methods=["GET"])
 def get_product_with_max_price_api():
     max_price = db.get_product_with_max_price()
     return max_price
 
-@app.route("/prices/stats/<product_id>")
+@app.route("/prices/stats/<product_id>", methods=["GET"])
 def get_stats_of_product_api(product_id):
     stat = db.get_stats_of_product(product_id)
     return stat

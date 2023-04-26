@@ -35,28 +35,51 @@ namespace ProductShopClient
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var client = new HttpClient();
-            var response = await client.GetAsync("http://localhost:8080/customers/show");
+            DownloadCustomers(client);
+        }
+
+        private async void DownloadCustomers(HttpClient client)
+        {
+            var response = await client.GetAsync("http://localhost:8080/customers/all");
             var content = await response.Content.ReadAsStringAsync();
             Customers = JsonConvert.DeserializeObject<ObservableCollection<Customer>>(content);
+            CustomersListView.ItemsSource = Customers;
         }
 
         private void OnFilterButtonClicked(object sender, RoutedEventArgs e)
         {
+            string filter = FilterTextBox.Text;
+            var collectionView = (CollectionView)CollectionViewSource.GetDefaultView(Customers);
 
+            if (collectionView != null)
+            {
+                collectionView.Filter = item =>
+                {
+                    var customer = item as Customer;
+                    return customer != null && 
+                    (
+                    customer.Id.ToString().Contains(FilterTextBox.Text) ||
+                    customer.Name != null && customer.Name.Contains(FilterTextBox.Text) ||
+                    customer.Surname != null && customer.Surname.Contains(FilterTextBox.Text) ||
+                    customer.BirthDate != null && customer.BirthDate.ToString().Contains(FilterTextBox.Text)
+                    );
+                };
+            }
         }
     }
 
     public class Customer
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public IList<Purchase> Purchases { get; set; }
-    }
+        [JsonProperty("customer_id")]
+        public int Id { get; set; }
 
-    public class Purchase
-    {
-        public string Product { get; set; }
-        public string Quantity { get; set; }
-        public string Price { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("surname")]
+        public string Surname { get; set; }
+
+        [JsonProperty("birth_date")]
+        public DateTime BirthDate { get; set; }
     }
 }

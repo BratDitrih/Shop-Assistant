@@ -6,53 +6,32 @@
         xmlns:local="clr-namespace:ProductShopClient"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        Loaded="Window_Loaded"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        Loaded="Window_Loaded">
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock Text="Filter:" Margin="5"/>
-            <TextBox x:Name="FilterTextBox" Margin="5"/>
+            <TextBlock Text="Filter:"  Margin="5"/>
+            <TextBox x:Name="FilterTextBox" Width="100" Margin="5"/>
             <Button Content="Apply" Margin="5" Click="OnFilterButtonClicked"/>
         </StackPanel>
-
-        <ListView Grid.Row="1" ItemsSource="{Binding Customers}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}"/>
-                </GridView>
-            </ListView.View>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <ContentPresenter Grid.Column="0" Content="{Binding}" Margin="5"/>
-                                    <ListView Grid.Column="1" ItemsSource="{Binding Purchases}">
-                                        <ListView.View>
-                                            <GridView>
-                                                <GridViewColumn Header="Product" DisplayMemberBinding="{Binding Product}"/>
-                                                <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
-                                                <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
-                                            </GridView>
-                                        </ListView.View>
-                                    </ListView>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+        
+        <ScrollViewer Grid.Row="1">
+            <ListView x:Name="CustomersListView">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
+                        <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}" Width="100"/>
+                        <GridViewColumn Header="BirthDate" DisplayMemberBinding="{Binding BirthDate}" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
+        
     </Grid>
 </Window>

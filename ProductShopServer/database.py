@@ -5,16 +5,17 @@ from models import Product, Store, Customer, Price, Sale
 
 engine = create_engine("postgresql+psycopg2://postgres:400501@localhost:5432/ProductSales")
 
-def get_random_customers():
+def get_all_customers():
     Session = sessionmaker(bind=engine)
     with Session() as session:
-        customers = session.query(Customer).order_by(func.random()).limit(10)
+        customers = session.query(Customer).all()
         result = []
         for customer in customers:
             result.append({
             'customer_id': customer.customer_id,
             'name': customer.name,
-            'surname': customer.surname
+            'surname': customer.surname,
+            "birth_date": customer.birth_date
             })
     return jsonify(result)
  
