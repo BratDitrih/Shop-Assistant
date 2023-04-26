@@ -94,6 +94,38 @@ namespace ProductShopClient
                 PurchasesListView.Visibility = Visibility.Visible;
             }
         }
+
+        private async void SearchStoreByIdButton(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(StoreIdTextBox.Text, out int id))
+            {
+                var content = await GetJsonResponse($"http://localhost:8080/stores/{id}");
+                var foundedStore = JsonConvert.DeserializeObject<Store>(content);
+                if (foundedStore.Id > 0)
+                {
+                    FoundedStoreInfo.Text = foundedStore.ToString();
+                }
+                else
+                {
+                    FoundedStoreInfo.Text = "Магазин с таким Id не найден";
+                }
+            }
+            else
+            {
+                FoundedStoreInfo.Text = "Неправильный формат Id";
+            }
+            
+        }
+
+        private void AddStoreButton(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteStoreButton(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     public class Customer
@@ -124,5 +156,23 @@ namespace ProductShopClient
 
         [JsonProperty("brand")]
         public string Brand { get; set; }
+    }
+
+    public class Store
+    {
+        [JsonProperty("store_id")]
+        public int Id { get; set; }
+
+        [JsonProperty("address")]
+        public string Address { get; set; }
+
+        [JsonProperty("Region")]
+        public string Region { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, Address: {Address}, Region: {Region}";
+        }
+
     }
 }

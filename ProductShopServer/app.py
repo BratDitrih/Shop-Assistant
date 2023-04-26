@@ -14,7 +14,7 @@ def get_customer_purchases(customer_id):
     customers = db.get_customer_purchases(customer_id)
     return customers
 
-@app.route("/stores/<store_id>/", methods=["GET"])
+@app.route("/stores/<store_id>", methods=["GET"])
 def get_store_api(store_id):
     store = db.get_store(store_id)
     return store

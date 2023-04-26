@@ -39,7 +39,7 @@ def get_customer_purchases(customer_id):
 
 def get_store(store_id):
     Session = sessionmaker(bind=engine)
-    result = { }
+    result = {}
     with Session() as session:
         store = session.query(Store).filter(Store.store_id == store_id).first()
         if store:
