@@ -5,132 +5,160 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductShopClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="450" Width="900"
         Loaded="Window_Loaded">
-    <TabControl>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TabControl Grid.Row="0">
 
-        <TabItem Header="Статистика по покупателям">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <TabItem Header="Статистика по покупателям">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Text="Фильтр:"  Margin="5"/>
-                    <TextBox x:Name="FilterTextBox" Width="100" Margin="5"/>
-                    <Button Content="Применить" Margin="5" Click="OnFilterButtonClicked"/>
-                    <Button Content="Сбросить" Margin="5" Click="OnResetButtonClicked"/>
-                </StackPanel>
+                    <!--Панель управления-->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="Фильтр:"  Margin="5"/>
+                        <TextBox x:Name="FilterTextBox" Width="100" Margin="5"/>
+                        <Button Content="Применить" Margin="5" Click="OnFilterButtonClicked"/>
+                        <Button Content="Сбросить" Margin="5" Click="OnResetButtonClicked"/>
+                    </StackPanel>
 
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <!--Два списка -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                    <ScrollViewer Grid.Column="0">
-                        <ListView x:Name="CustomersListView" ItemsSource="{Binding Customers}" SelectionChanged="OnCustomerSelectionChanged">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
-                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
-                                    <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}" Width="100"/>
-                                    <GridViewColumn Header="BirthDate" DisplayMemberBinding="{Binding BirthDate}" Width="100"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </ScrollViewer>
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <Label Content="Список покупателей:" Style="{StaticResource HeaderLabel}"/>
+                        </StackPanel>
 
-                    <ScrollViewer Grid.Column="1">
-                        <ListView x:Name="PurchasesListView" Visibility="Collapsed">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
-                                    <GridViewColumn Header="SaleDate" DisplayMemberBinding="{Binding SaleDate}" Width="100"/>
-                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
-                                    <GridViewColumn Header="Brand" DisplayMemberBinding="{Binding Brand}" Width="100"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </ScrollViewer>
+                        <!--Покупатели-->
+                        <ScrollViewer Grid.Row="1" Grid.Column="0">
+                            <ListView x:Name="CustomersListView" ItemsSource="{Binding Customers}" SelectionChanged="OnCustomerSelectionChanged">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
+                                        <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}" Width="100"/>
+                                        <GridViewColumn Header="BirthDate" DisplayMemberBinding="{Binding BirthDate}" Width="150"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </ScrollViewer>
+
+                        <StackPanel Grid.Row="0" Grid.Column="1">
+                            <Label Content="Список покупок выбранного покупателя:" Style="{StaticResource HeaderLabel}"/>
+                        </StackPanel>
+
+                        <!--Покупки выбранного покупателя-->
+                        <ScrollViewer Grid.Row="1" Grid.Column="1">
+                            <ListView x:Name="PurchasesListView" Visibility="Collapsed">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="50"/>
+                                        <GridViewColumn Header="SaleDate" DisplayMemberBinding="{Binding SaleDate}" Width="150"/>
+                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
+                                        <GridViewColumn Header="Brand" DisplayMemberBinding="{Binding Brand}" Width="100"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </ScrollViewer>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </TabItem>
+            </TabItem>
 
-        <TabItem Header="Управление магазинами">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <TabItem Header="Управление магазинами">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="Информация по магазину:" Margin="5"/>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="Информация по магазину:" Margin="5"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Id:" Margin="5"/>
+                                <TextBox x:Name="StoreIdTextBox" Width="60" Margin="5"/>
+                            </StackPanel>
+                            <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreButtonClicked"/>
+                        </StackPanel>
+
+                        <TextBlock x:Name="FoundedStoreInfo" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                        <Label Content="Добавление магазина:" Margin="5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Адресс:" Margin="5"/>
+                            <TextBox x:Name="NewAddressTextBox" Width="200" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Регион:" Margin="5"/>
+                            <TextBox x:Name="NewRegionTextBox" Width="200" Margin="5"/>
+                        </StackPanel>
+                        <Button Content="Добавить" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnAddStoreButtonClicked"/>
+                        <TextBlock x:Name="AddStatusTextBlock" Margin="5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Vertical">
+                        <Label Content="Удаление магазина:" Margin="5"/>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Id:" Margin="5"/>
-                            <TextBox x:Name="StoreIdTextBox" Width="60" Margin="5"/>
+                            <TextBox x:Name="DeleteIdTextBox" Width="60" Margin="5"/>
                         </StackPanel>
-                        <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreButtonClicked"/>
+                        <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="OnDeleteStoreButtonClicked"/>
+                        <TextBlock x:Name="DeleteStatusTextBlock" Margin="5"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Статистика по продуктам">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Продукт с максимальной ценой:" Margin="5"/>
+                            <TextBlock x:Name="ProductWithMaxPriceStats" Width="Auto" VerticalAlignment="Center" Margin="5"/>
+                        </StackPanel>
                     </StackPanel>
 
-                    <TextBlock x:Name="FoundedStoreInfo" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-                </StackPanel>
-
-                <StackPanel Grid.Row="1" Orientation="Vertical">
-                    <Label Content="Добавление магазина:" Margin="5"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Адресс:" Margin="5"/>
-                        <TextBox x:Name="NewAddressTextBox" Width="200" Margin="5"/>
+                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                        <Label Content="Информация по продукту:" Margin="5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Id:" Margin="5"/>
+                            <TextBox x:Name="ProductIdTextBox" Width="60" Margin="5"/>
+                        </StackPanel>
+                        <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchProductButtonClicked"/>
+                        <TextBlock x:Name="FoundedProductInfo" Width="Auto" VerticalAlignment="Center" Margin="5"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Регион:" Margin="5"/>
-                        <TextBox x:Name="NewRegionTextBox" Width="200" Margin="5"/>
-                    </StackPanel>
-                    <Button Content="Добавить" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnAddStoreButtonClicked"/>
-                    <TextBlock x:Name="AddStatusTextBlock" Margin="5"/>
-                </StackPanel>
+                </Grid>
+            </TabItem>
 
-                <StackPanel Grid.Row="2" Orientation="Vertical">
-                    <Label Content="Удаление магазина:" Margin="5"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Id:" Margin="5"/>
-                        <TextBox x:Name="DeleteIdTextBox" Width="60" Margin="5"/>
-                    </StackPanel>
-                    <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="OnDeleteStoreButtonClicked"/>
-                    <TextBlock x:Name="DeleteStatusTextBlock" Margin="5"/>
-                </StackPanel>
-            </Grid>
-        </TabItem>
+        </TabControl>
 
-        <TabItem Header="Статистика по продуктам">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0" Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Продукт с максимальной ценой:" Margin="5"/>
-                        <TextBlock x:Name="ProductWithMaxPriceStats" Width="Auto" VerticalAlignment="Center" Margin="5"/>
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Grid.Row="1" Orientation="Vertical">
-                    <Label Content="Информация по продукту:" Margin="5"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Id:" Margin="5"/>
-                        <TextBox x:Name="ProductIdTextBox" Width="60" Margin="5"/>
-                    </StackPanel>
-                    <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchProductButtonClicked"/>
-                    <TextBlock x:Name="FoundedProductInfo" Width="Auto" VerticalAlignment="Center" Margin="5"/>
-                </StackPanel>
-            </Grid>
-        </TabItem>
-
-    </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="LightYellow">
+            <Label Content="Статус:" Margin="5"/>
+            <TextBlock x:Name="StatusTextBlock" Width="Auto" VerticalAlignment="Center" Margin="5"/>
+        </StackPanel>
+    </Grid>
 </Window>

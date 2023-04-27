@@ -108,7 +108,7 @@ def get_stats_of_product(product_id):
             "count": count,
             "stores_amount": stores_count,
             "min_price": min_price,
-            "max-price": max_price,
+            "max_price": max_price,
             "avg_price": avg_price
             }
     return jsonify(result)

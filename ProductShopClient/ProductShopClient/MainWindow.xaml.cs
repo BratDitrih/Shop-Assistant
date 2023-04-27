@@ -8,7 +8,6 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,7 +26,9 @@ namespace ProductShopClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly string BASEURL = "http://localhost:8080/";
         public ObservableCollection<Customer> Customers { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -40,7 +41,6 @@ namespace ProductShopClient
             DownloadProductWithMaxPrice();
         }
 
-
         private async Task<string> GetJsonResponse(string url)
         {
             var client = new HttpClient();
@@ -51,14 +51,14 @@ namespace ProductShopClient
 
         private async void DownloadCustomers()
         {
-            var content = await GetJsonResponse("http://localhost:8080/customers/all");
+            var content = await GetJsonResponse($"{BASEURL}/customers/all");
             Customers = JsonConvert.DeserializeObject<ObservableCollection<Customer>>(content);
             CustomersListView.ItemsSource = Customers;
         }
 
         private async void DownloadProductWithMaxPrice()
         {
-            var content = await GetJsonResponse("http://localhost:8080/prices/max");
+            var content = await GetJsonResponse($"{BASEURL}//prices/max");
             var productWithMaxPrice = JsonConvert.DeserializeObject<Product>(content);
             ProductWithMaxPriceStats.Text = productWithMaxPrice.ToString();
         }
@@ -96,7 +96,7 @@ namespace ProductShopClient
             if (selectedCustomer != null)
             {
                 int customerId = selectedCustomer.Id;
-                var content = await GetJsonResponse($"http://localhost:8080/customers/{customerId}/purchases");
+                var content = await GetJsonResponse($"{BASEURL}/customers/{customerId}/purchases");
                 var purchases = JsonConvert.DeserializeObject<List<Purchase>>(content);
                 PurchasesListView.ItemsSource = purchases;
                 PurchasesListView.Visibility = Visibility.Visible;
@@ -107,7 +107,7 @@ namespace ProductShopClient
         {
             if (int.TryParse(StoreIdTextBox.Text, out int id))
             {
-                var content = await GetJsonResponse($"http://localhost:8080/stores/{id}");
+                var content = await GetJsonResponse($"{BASEURL}/stores/{id}");
                 var foundedStore = JsonConvert.DeserializeObject<Store>(content);
                 if (foundedStore.Id > 0)
                 {
@@ -139,7 +139,7 @@ namespace ProductShopClient
                     using (var client = new HttpClient())
                     {
                         var content = new StringContent(JsonConvert.SerializeObject(storeToAdd), Encoding.UTF8, "application/json");
-                        var response = await client.PostAsync($"http://localhost:8080/stores/add", content);
+                        var response = await client.PostAsync($"{BASEURL}/stores/add", content);
                         response.EnsureSuccessStatusCode();
                         var responseJson = await response.Content.ReadAsStringAsync();
                         int addedStoreId = JsonConvert.DeserializeObject<dynamic>(responseJson).store_id;
@@ -167,7 +167,7 @@ namespace ProductShopClient
                 {
                     using (var client = new HttpClient())
                     {
-                        var response = await client.DeleteAsync($"http://localhost:8080/stores/delete/{id}");
+                        var response = await client.DeleteAsync($"{BASEURL}/stores/delete/{id}");
                         response.EnsureSuccessStatusCode();
                         var responseJson = await response.Content.ReadAsStringAsync();
                         string responseText = JsonConvert.DeserializeObject<dynamic>(responseJson).status;
@@ -196,7 +196,7 @@ namespace ProductShopClient
         {
             if (int.TryParse(ProductIdTextBox.Text, out int id))
             {
-                var content = await GetJsonResponse($"http://localhost:8080/prices/stats/{id}");
+                var content = await GetJsonResponse($"{BASEURL}/prices/stats/{id}");
                 var foundedProduct = JsonConvert.DeserializeObject<ProdcutStats>(content);
                 if (foundedProduct.Count > 0)
                 {
@@ -212,92 +212,5 @@ namespace ProductShopClient
                 FoundedProductInfo.Text = "Неправильный формат Id";
             }
         }
-    }
-
-    public class Customer
-    {
-        [JsonProperty("customer_id")]
-        public int Id { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("surname")]
-        public string Surname { get; set; }
-
-        [JsonProperty("birth_date")]
-        public DateTime BirthDate { get; set; }
-    }
-
-    public class Purchase
-    {
-        [JsonProperty("sale_id")]
-        public int Id { get; set; }
-
-        [JsonProperty("sale_date")]
-        public DateTime SaleDate { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("brand")]
-        public string Brand { get; set; }
-    }
-
-    public class Product
-    {
-        [JsonProperty("product_id")]
-        public int Id { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("category")]
-        public string Category { get; set; }
-
-        [JsonProperty("brand")]
-        public string Brand { get; set; }
-
-        [JsonProperty("price")]
-        public double Price { get; set; }
-
-        [JsonProperty("startDate")]
-        public DateTime StartDate { get; set; }
-
-        public override string ToString() => $"Id: {Id}, Name: {Name}, Category: {Category}, Brand: {Brand}, Price: {Price}, StartDate: {StartDate}";
-    }
-
-    public class ProdcutStats
-    {
-        [JsonProperty("count")]
-        public int Count { get; set; }
-
-        [JsonProperty("stores_amount")]
-        public int StoresAmount { get; set; }
-
-        [JsonProperty("min_price")]
-        public double MinPrice { get; set; }
-
-        [JsonProperty("max_price")]
-        public double MaxPrice { get; set; }
-
-        [JsonProperty("avg_price")]
-        public double AvgPrice { get; set; }
-
-        public override string ToString() => $"Count: {Count}, Stores Amount: {StoresAmount}, MinPrice: {MinPrice}, MaxPrice: {MaxPrice}, AvgPrice: {AvgPrice}";
-    }
-
-    public class Store
-    {
-        [JsonProperty("store_id", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int Id { get; set; }
-
-        [JsonProperty("address")]
-        public string Address { get; set; }
-
-        [JsonProperty("region")]
-        public int Region { get; set; }
-
-        public override string ToString() => $"Id: {Id}, Address: {Address}, Region: {Region}";
     }
 }
