@@ -24,6 +24,6 @@ namespace ProductShopClient
         [JsonProperty("startDate")]
         public DateTime StartDate { get; set; }
 
-        public override string ToString() => $"Id: {Id}, Name: {Name}, Category: {Category}, Brand: {Brand}, Price: {Price}, StartDate: {StartDate}";
+        public override string ToString() => $"Id: {Id}\nName: {Name}\nCategory: {Category}\nBrand: {Brand}\nPrice: {Price}\nStartDate: {StartDate}";
     }
 }

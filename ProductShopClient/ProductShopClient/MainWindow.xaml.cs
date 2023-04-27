@@ -27,6 +27,7 @@ namespace ProductShopClient
     public partial class MainWindow : Window
     {
         private readonly string BASEURL = "http://localhost:8080/";
+        private readonly string REFRESH_STATE = "...";
         public ObservableCollection<Customer> Customers { get; set; }
 
         public MainWindow()
@@ -105,14 +106,14 @@ namespace ProductShopClient
 
         private async void OnSearchStoreButtonClicked(object sender, RoutedEventArgs e)
         {
-            FoundedStoreInfo.Text = "...";
+            FoundedStoreInfo.Text = REFRESH_STATE;
             if (int.TryParse(StoreIdTextBox.Text, out int id))
             {
                 var content = await GetJsonResponse($"{BASEURL}/stores/{id}");
                 var foundedStore = JsonConvert.DeserializeObject<Store>(content);
                 if (foundedStore.Id > 0)
                 {
-                    FoundedStoreInfo.Text = "Найденный магазин: " + foundedStore.ToString();
+                    FoundedStoreInfo.Text = "Найденный магазин:\n" + foundedStore.ToString();
                 }
                 else
                 {
@@ -127,7 +128,7 @@ namespace ProductShopClient
 
         private async void OnAddStoreButtonClicked(object sender, RoutedEventArgs e)
         {
-            AddStatusTextBlock.Text = "...";
+            AddStatusTextBlock.Text = REFRESH_STATE;
             string address = NewAddressTextBox.Text;
             if (int.TryParse(NewRegionTextBox.Text, out int region))
             {
@@ -163,7 +164,7 @@ namespace ProductShopClient
 
         private async void OnDeleteStoreButtonClicked(object sender, RoutedEventArgs e)
         {
-            DeleteStatusTextBlock.Text = "...";
+            DeleteStatusTextBlock.Text = REFRESH_STATE;
             if (int.TryParse(DeleteIdTextBox.Text, out int id))
             {
                 try
@@ -194,16 +195,22 @@ namespace ProductShopClient
                 DeleteStatusTextBlock.Text = "Неправильный формат Id";
             }
         }
+        private void OnUpdateProductWithMaxPriceClicked(object sender, RoutedEventArgs e)
+        {
+            ProductWithMaxPriceStats.Text = REFRESH_STATE;
+            DownloadProductWithMaxPrice();
+        }
 
         private async void OnSearchProductButtonClicked(object sender, RoutedEventArgs e)
         {
+            FoundedProductInfo.Text = REFRESH_STATE;
             if (int.TryParse(ProductIdTextBox.Text, out int id))
             {
                 var content = await GetJsonResponse($"{BASEURL}/prices/stats/{id}");
                 var foundedProduct = JsonConvert.DeserializeObject<ProdcutStats>(content);
                 if (foundedProduct.Count > 0)
                 {
-                    FoundedProductInfo.Text = foundedProduct.ToString();
+                    FoundedProductInfo.Text = "Найден продукт:\n" + foundedProduct.ToString();
                 }
                 else
                 {

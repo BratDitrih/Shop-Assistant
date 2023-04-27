@@ -20,6 +20,6 @@ namespace ProductShopClient
         [JsonProperty("avg_price")]
         public double AvgPrice { get; set; }
 
-        public override string ToString() => $"Count: {Count}, Stores Amount: {StoresAmount}, MinPrice: {MinPrice}, MaxPrice: {MaxPrice}, AvgPrice: {AvgPrice}";
+        public override string ToString() => $"Count: {Count}\nStores Amount: {StoresAmount}\nMinPrice: {MinPrice}\nMaxPrice: {MaxPrice}\nAvgPrice: {AvgPrice}";
     }
 }

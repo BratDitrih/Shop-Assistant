@@ -11,17 +11,23 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-        <Style TargetType="Border" x:Key="GrayBorder">
+        <Style TargetType="Border" x:Key="RegionBorder">
             <Setter Property="BorderBrush" Value="#FF4699C5"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="0, 5, 0, 5"/>
         </Style>
 
         <Style TargetType="TextBlock" x:Key="TextBlockWithResponse">
-            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Width" Value="300"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="DefaultButton">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
 
     </Application.Resources>

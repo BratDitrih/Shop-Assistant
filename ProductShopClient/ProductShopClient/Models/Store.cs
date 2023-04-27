@@ -14,6 +14,6 @@ namespace ProductShopClient
         [JsonProperty("region")]
         public int Region { get; set; }
 
-        public override string ToString() => $"Id: {Id}, Address: {Address}, Region: {Region}";
+        public override string ToString() => $"Id: {Id}\nAddress: {Address}\nRegion: {Region}";
     }
 }

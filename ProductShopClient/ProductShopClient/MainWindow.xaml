@@ -26,8 +26,8 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <TextBlock Text="Фильтр:"  Margin="5"/>
                         <TextBox x:Name="FilterTextBox" Width="100" Margin="5"/>
-                        <Button Content="Применить" Margin="5" Click="OnFilterButtonClicked"/>
-                        <Button Content="Сбросить" Margin="5" Click="OnResetButtonClicked"/>
+                        <Button Content="Применить" Style="{StaticResource DefaultButton}" Click="OnFilterButtonClicked"/>
+                        <Button Content="Сбросить"  Style="{StaticResource DefaultButton}" Click="OnResetButtonClicked"/>
                     </StackPanel>
 
                     <Grid Grid.Row="1">
@@ -41,7 +41,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Row="0" Grid.Column="0">
-                            <Label Content="Список покупателей:" Style="{StaticResource HeaderLabel}"/>
+                            <Label Content="Список покупателей" Style="{StaticResource HeaderLabel}"/>
                         </StackPanel>
 
                         <!--Покупатели-->
@@ -59,7 +59,7 @@
                         </ScrollViewer>
 
                         <StackPanel Grid.Row="0" Grid.Column="1">
-                            <Label Content="Список покупок выбранного покупателя:" Style="{StaticResource HeaderLabel}"/>
+                            <Label Content="Список покупок выбранного покупателя" Style="{StaticResource HeaderLabel}"/>
                         </StackPanel>
 
                         <!--Покупки выбранного покупателя-->
@@ -88,17 +88,17 @@
                     </Grid.RowDefinitions>
 
                     <!--Поиск информции по Id-->
-                    <Border Grid.Row="0" Style="{StaticResource GrayBorder}">
+                    <Border Grid.Row="0" Style="{StaticResource RegionBorder}">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
-                                <Label Content="Информация по магазину:" Style="{StaticResource HeaderLabel}"/>
+                                <Label Content="Информация по магазину" Style="{StaticResource HeaderLabel}"/>
                                 
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Id:" Margin="5"/>
                                     <TextBox x:Name="StoreIdTextBox" Width="60" Margin="5"/>
                                 </StackPanel>
-                                
-                                <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreButtonClicked"/>
+
+                                <Button Content="Найти"  Style="{StaticResource DefaultButton}" Click="OnSearchStoreButtonClicked"/>
                             </StackPanel>
 
                             <TextBlock x:Name="FoundedStoreInfo" Style="{StaticResource TextBlockWithResponse}"/>
@@ -106,10 +106,10 @@
                     </Border>
 
                     <!--Добавление нового магазина-->
-                    <Border Grid.Row="1" Style="{StaticResource GrayBorder}">
+                    <Border Grid.Row="1" Style="{StaticResource RegionBorder}">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
-                                <Label Content="Добавление магазина:" Style="{StaticResource HeaderLabel}"/>
+                                <Label Content="Добавление магазина" Style="{StaticResource HeaderLabel}"/>
                                 
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Адресс:" Margin="5"/>
@@ -120,8 +120,8 @@
                                     <Label Content="Регион:" Margin="5"/>
                                     <TextBox x:Name="NewRegionTextBox" Width="200" Margin="5"/>
                                 </StackPanel>
-                                
-                                <Button Content="Добавить" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnAddStoreButtonClicked"/>
+
+                                <Button Content="Добавить" Style="{StaticResource DefaultButton}" Click="OnAddStoreButtonClicked"/>
                             </StackPanel>
 
                             <TextBlock x:Name="AddStatusTextBlock" Style="{StaticResource TextBlockWithResponse}"/>
@@ -129,17 +129,17 @@
                     </Border>
 
                     <!--Удаление магазина по Id-->
-                    <Border Grid.Row="2" Style="{StaticResource GrayBorder}">
+                    <Border Grid.Row="2" Style="{StaticResource RegionBorder}">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
-                                <Label Content="Удаление магазина:" Style="{StaticResource HeaderLabel}"/>
+                                <Label Content="Удаление магазина" Style="{StaticResource HeaderLabel}"/>
                                 
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Id:" Margin="5"/>
                                     <TextBox x:Name="DeleteIdTextBox" Width="60" Margin="5"/>
                                 </StackPanel>
-                                
-                                <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="OnDeleteStoreButtonClicked"/>
+
+                                <Button Content="Удалить" Style="{StaticResource DefaultButton}" Click="OnDeleteStoreButtonClicked"/>
                             </StackPanel>
                             
                             <TextBlock x:Name="DeleteStatusTextBlock" Style="{StaticResource TextBlockWithResponse}"/>
@@ -152,28 +152,40 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                    <!--Информация о продукте с максимальной ценой-->
+                    <Border Grid.Row="0" Style="{StaticResource RegionBorder}">
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Продукт с максимальной ценой:" Margin="5"/>
-                            <TextBlock x:Name="ProductWithMaxPriceStats" Width="Auto" VerticalAlignment="Center" Margin="5"/>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Продукт с максимальной ценой:" Style="{StaticResource HeaderLabel}"/>
+                                <Button Content="Обновить" Style="{StaticResource DefaultButton}" Click="OnUpdateProductWithMaxPriceClicked"/>
+                            </StackPanel>
+                            <TextBlock x:Name="ProductWithMaxPriceStats" Style="{StaticResource TextBlockWithResponse}"/>
                         </StackPanel>
-                    </StackPanel>
+                    </Border>
 
-                    <StackPanel Grid.Row="1" Orientation="Vertical">
-                        <Label Content="Информация по продукту:" Margin="5"/>
+                    <!--Поиск информации о продукте по Id-->
+                    <Border Grid.Row="1" Style="{StaticResource RegionBorder}">
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Id:" Margin="5"/>
-                            <TextBox x:Name="ProductIdTextBox" Width="60" Margin="5"/>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Информация по продукту" Style="{StaticResource HeaderLabel}"/>
+
+                                <StackPanel  Orientation="Horizontal">
+                                    <Label Content="Id:" Margin="5"/>
+                                    <TextBox x:Name="ProductIdTextBox" Width="60" Margin="5"/>
+                                </StackPanel>
+
+                                <Button Content="Найти" Style="{StaticResource DefaultButton}" Click="OnSearchProductButtonClicked"/>
+                            </StackPanel>
+
+                            <TextBlock x:Name="FoundedProductInfo" Style="{StaticResource TextBlockWithResponse}"/>
                         </StackPanel>
-                        <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchProductButtonClicked"/>
-                        <TextBlock x:Name="FoundedProductInfo" Width="Auto" VerticalAlignment="Center" Margin="5"/>
-                    </StackPanel>
+                    </Border>
                 </Grid>
             </TabItem>
-
+            
         </TabControl>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Background="LightYellow">
