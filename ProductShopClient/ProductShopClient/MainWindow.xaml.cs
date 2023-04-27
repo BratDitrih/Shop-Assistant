@@ -105,13 +105,14 @@ namespace ProductShopClient
 
         private async void OnSearchStoreButtonClicked(object sender, RoutedEventArgs e)
         {
+            FoundedStoreInfo.Text = "...";
             if (int.TryParse(StoreIdTextBox.Text, out int id))
             {
                 var content = await GetJsonResponse($"{BASEURL}/stores/{id}");
                 var foundedStore = JsonConvert.DeserializeObject<Store>(content);
                 if (foundedStore.Id > 0)
                 {
-                    FoundedStoreInfo.Text = foundedStore.ToString();
+                    FoundedStoreInfo.Text = "Найденный магазин: " + foundedStore.ToString();
                 }
                 else
                 {
@@ -126,6 +127,7 @@ namespace ProductShopClient
 
         private async void OnAddStoreButtonClicked(object sender, RoutedEventArgs e)
         {
+            AddStatusTextBlock.Text = "...";
             string address = NewAddressTextBox.Text;
             if (int.TryParse(NewRegionTextBox.Text, out int region))
             {
@@ -161,6 +163,7 @@ namespace ProductShopClient
 
         private async void OnDeleteStoreButtonClicked(object sender, RoutedEventArgs e)
         {
+            DeleteStatusTextBlock.Text = "...";
             if (int.TryParse(DeleteIdTextBox.Text, out int id))
             {
                 try

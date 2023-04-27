@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProductShopClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="900"
+        Title="MainWindow" Height="500" Width="900"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
@@ -30,7 +30,6 @@
                         <Button Content="Сбросить" Margin="5" Click="OnResetButtonClicked"/>
                     </StackPanel>
 
-                    <!--Два списка -->
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -86,45 +85,66 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical">
-                            <Label Content="Информация по магазину:" Margin="5"/>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Id:" Margin="5"/>
-                                <TextBox x:Name="StoreIdTextBox" Width="60" Margin="5"/>
+                    <!--Поиск информции по Id-->
+                    <Border Grid.Row="0" Style="{StaticResource GrayBorder}">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Информация по магазину:" Style="{StaticResource HeaderLabel}"/>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Id:" Margin="5"/>
+                                    <TextBox x:Name="StoreIdTextBox" Width="60" Margin="5"/>
+                                </StackPanel>
+                                
+                                <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreButtonClicked"/>
                             </StackPanel>
-                            <Button Content="Найти" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnSearchStoreButtonClicked"/>
-                        </StackPanel>
 
-                        <TextBlock x:Name="FoundedStoreInfo" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-                    </StackPanel>
+                            <TextBlock x:Name="FoundedStoreInfo" Style="{StaticResource TextBlockWithResponse}"/>
+                        </StackPanel>
+                    </Border>
 
-                    <StackPanel Grid.Row="1" Orientation="Vertical">
-                        <Label Content="Добавление магазина:" Margin="5"/>
+                    <!--Добавление нового магазина-->
+                    <Border Grid.Row="1" Style="{StaticResource GrayBorder}">
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Адресс:" Margin="5"/>
-                            <TextBox x:Name="NewAddressTextBox" Width="200" Margin="5"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Регион:" Margin="5"/>
-                            <TextBox x:Name="NewRegionTextBox" Width="200" Margin="5"/>
-                        </StackPanel>
-                        <Button Content="Добавить" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnAddStoreButtonClicked"/>
-                        <TextBlock x:Name="AddStatusTextBlock" Margin="5"/>
-                    </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Добавление магазина:" Style="{StaticResource HeaderLabel}"/>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Адресс:" Margin="5"/>
+                                    <TextBox x:Name="NewAddressTextBox" Width="200" Margin="5"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Регион:" Margin="5"/>
+                                    <TextBox x:Name="NewRegionTextBox" Width="200" Margin="5"/>
+                                </StackPanel>
+                                
+                                <Button Content="Добавить" Margin="5" Width="100" HorizontalAlignment="Left" Click="OnAddStoreButtonClicked"/>
+                            </StackPanel>
 
-                    <StackPanel Grid.Row="2" Orientation="Vertical">
-                        <Label Content="Удаление магазина:" Margin="5"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Id:" Margin="5"/>
-                            <TextBox x:Name="DeleteIdTextBox" Width="60" Margin="5"/>
+                            <TextBlock x:Name="AddStatusTextBlock" Style="{StaticResource TextBlockWithResponse}"/>
                         </StackPanel>
-                        <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="OnDeleteStoreButtonClicked"/>
-                        <TextBlock x:Name="DeleteStatusTextBlock" Margin="5"/>
-                    </StackPanel>
+                    </Border>
+
+                    <!--Удаление магазина по Id-->
+                    <Border Grid.Row="2" Style="{StaticResource GrayBorder}">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Удаление магазина:" Style="{StaticResource HeaderLabel}"/>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Id:" Margin="5"/>
+                                    <TextBox x:Name="DeleteIdTextBox" Width="60" Margin="5"/>
+                                </StackPanel>
+                                
+                                <Button Content="Удалить" Margin="5"  Width="100" HorizontalAlignment="Left" Click="OnDeleteStoreButtonClicked"/>
+                            </StackPanel>
+                            
+                            <TextBlock x:Name="DeleteStatusTextBlock" Style="{StaticResource TextBlockWithResponse}"/>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </TabItem>
 

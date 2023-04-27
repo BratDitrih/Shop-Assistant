@@ -10,5 +10,19 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
+
+        <Style TargetType="Border" x:Key="GrayBorder">
+            <Setter Property="BorderBrush" Value="#FF4699C5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="TextBlockWithResponse">
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+
     </Application.Resources>
 </Application>
