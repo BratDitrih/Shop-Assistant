@@ -50,9 +50,11 @@ namespace ProductShopClient
             try
             {
                 StatusTextBlock.Text = SERVER_REQUEST;
+                RefreshIcon.Visibility = Visibility.Visible;
                 var client = new HttpClient();
                 var response = await client.GetAsync(url);
                 var content = await response.Content.ReadAsStringAsync();
+                RefreshIcon.Visibility = Visibility.Collapsed;
                 StatusTextBlock.Text = SERVER_RESPONSE;
                 return content;
             }
@@ -158,11 +160,13 @@ namespace ProductShopClient
                     using (var client = new HttpClient())
                     {
                         StatusTextBlock.Text = SERVER_REQUEST;
+                        RefreshIcon.Visibility = Visibility.Visible;
                         var content = new StringContent(JsonConvert.SerializeObject(storeToAdd), Encoding.UTF8, "application/json");
                         var response = await client.PostAsync($"{BASEURL}/stores/add", content);
                         response.EnsureSuccessStatusCode();
                         var responseJson = await response.Content.ReadAsStringAsync();
                         int addedStoreId = JsonConvert.DeserializeObject<dynamic>(responseJson).store_id;
+                        RefreshIcon.Visibility = Visibility.Collapsed;
                         StatusTextBlock.Text = SERVER_RESPONSE;
                         AddStatusTextBlock.Text = $"Магазин с Id = {addedStoreId} успешно добавлен";
                     }
@@ -191,10 +195,12 @@ namespace ProductShopClient
                     using (var client = new HttpClient())
                     {
                         StatusTextBlock.Text = SERVER_REQUEST;
+                        RefreshIcon.Visibility = Visibility.Visible;
                         var response = await client.DeleteAsync($"{BASEURL}/stores/delete/{id}");
                         response.EnsureSuccessStatusCode();
                         var responseJson = await response.Content.ReadAsStringAsync();
                         string responseText = JsonConvert.DeserializeObject<dynamic>(responseJson).status;
+                        RefreshIcon.Visibility = Visibility.Collapsed;
                         StatusTextBlock.Text = SERVER_RESPONSE;
                         if (responseText == "ok")
                         {
