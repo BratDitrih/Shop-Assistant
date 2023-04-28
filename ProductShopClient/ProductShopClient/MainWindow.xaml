@@ -188,9 +188,9 @@
             
         </TabControl>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="LightYellow">
+        <StatusBar Grid.Row="1" Background="LightYellow">
             <Label Content="Статус:" Margin="5"/>
-            <TextBlock x:Name="StatusTextBlock" Width="Auto" VerticalAlignment="Center" Margin="5"/>
-        </StackPanel>
+            <TextBlock x:Name="StatusTextBlock" VerticalAlignment="Center" Margin="5"/>
+        </StatusBar>
     </Grid>
 </Window>

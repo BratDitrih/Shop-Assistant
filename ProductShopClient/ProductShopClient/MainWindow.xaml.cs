@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Windows.Themes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,6 +29,8 @@ namespace ProductShopClient
     {
         private readonly string BASEURL = "http://localhost:8080/";
         private readonly string REFRESH_STATE = "...";
+        private readonly string SERVER_REQUEST = "Идет обращение к серверу";
+        private readonly string SERVER_RESPONSE = "Данные получены";
         public ObservableCollection<Customer> Customers { get; set; }
 
         public MainWindow()
@@ -44,15 +47,26 @@ namespace ProductShopClient
 
         private async Task<string> GetJsonResponse(string url)
         {
-            var client = new HttpClient();
-            var response = await client.GetAsync(url);
-            var content = await response.Content.ReadAsStringAsync();
-            return content;
+            try
+            {
+                StatusTextBlock.Text = SERVER_REQUEST;
+                var client = new HttpClient();
+                var response = await client.GetAsync(url);
+                var content = await response.Content.ReadAsStringAsync();
+                StatusTextBlock.Text = SERVER_RESPONSE;
+                return content;
+            }
+            catch (Exception ex)
+            {
+                StatusTextBlock.Text = "Ошибка при обращении к серверу: " + ex.Message;
+                return null;
+            }
         }
 
         private async void DownloadCustomers()
         {
             var content = await GetJsonResponse($"{BASEURL}/customers/all");
+            if (content == null) return;
             Customers = JsonConvert.DeserializeObject<ObservableCollection<Customer>>(content);
             CustomersListView.ItemsSource = Customers;
         }
@@ -60,6 +74,7 @@ namespace ProductShopClient
         private async void DownloadProductWithMaxPrice()
         {
             var content = await GetJsonResponse($"{BASEURL}//prices/max");
+            if (content == null) return;
             var productWithMaxPrice = JsonConvert.DeserializeObject<Product>(content);
             ProductWithMaxPriceStats.Text = productWithMaxPrice.ToString();
         }
@@ -110,6 +125,7 @@ namespace ProductShopClient
             if (int.TryParse(StoreIdTextBox.Text, out int id))
             {
                 var content = await GetJsonResponse($"{BASEURL}/stores/{id}");
+                if (content == null) return;
                 var foundedStore = JsonConvert.DeserializeObject<Store>(content);
                 if (foundedStore.Id > 0)
                 {
@@ -141,17 +157,20 @@ namespace ProductShopClient
                 {
                     using (var client = new HttpClient())
                     {
+                        StatusTextBlock.Text = SERVER_REQUEST;
                         var content = new StringContent(JsonConvert.SerializeObject(storeToAdd), Encoding.UTF8, "application/json");
                         var response = await client.PostAsync($"{BASEURL}/stores/add", content);
                         response.EnsureSuccessStatusCode();
                         var responseJson = await response.Content.ReadAsStringAsync();
                         int addedStoreId = JsonConvert.DeserializeObject<dynamic>(responseJson).store_id;
+                        StatusTextBlock.Text = SERVER_RESPONSE;
                         AddStatusTextBlock.Text = $"Магазин с Id = {addedStoreId} успешно добавлен";
                     }
                 }
                 catch (Exception ex)
                 {
-                    AddStatusTextBlock.Text = "Ошибка во время добавления записи. " + ex.Message;
+                    AddStatusTextBlock.Text = "Ошибка во время добавления записи";
+                    StatusTextBlock.Text = "Ошибка при обращении к серверу: " + ex.Message;
                 }
 
             }
@@ -171,10 +190,12 @@ namespace ProductShopClient
                 {
                     using (var client = new HttpClient())
                     {
+                        StatusTextBlock.Text = SERVER_REQUEST;
                         var response = await client.DeleteAsync($"{BASEURL}/stores/delete/{id}");
                         response.EnsureSuccessStatusCode();
                         var responseJson = await response.Content.ReadAsStringAsync();
                         string responseText = JsonConvert.DeserializeObject<dynamic>(responseJson).status;
+                        StatusTextBlock.Text = SERVER_RESPONSE;
                         if (responseText == "ok")
                         {
                             DeleteStatusTextBlock.Text = "Магазин был успешно удален";
@@ -187,7 +208,8 @@ namespace ProductShopClient
                 }
                 catch (Exception ex)
                 {
-                    DeleteStatusTextBlock.Text = "Ошибка во время удаления записи. " + ex.Message;
+                    DeleteStatusTextBlock.Text = "Ошибка во время удаления записи";
+                    StatusTextBlock.Text = "Ошибка при обращении к серверу: " + ex.Message;
                 }
             }
             else
@@ -207,10 +229,11 @@ namespace ProductShopClient
             if (int.TryParse(ProductIdTextBox.Text, out int id))
             {
                 var content = await GetJsonResponse($"{BASEURL}/prices/stats/{id}");
+                if (content == null) return;
                 var foundedProduct = JsonConvert.DeserializeObject<ProdcutStats>(content);
                 if (foundedProduct.Count > 0)
                 {
-                    FoundedProductInfo.Text = "Найден продукт:\n" + foundedProduct.ToString();
+                    FoundedProductInfo.Text = $"Статистика по продукту c Id = {id}:\n" + foundedProduct.ToString();
                 }
                 else
                 {
